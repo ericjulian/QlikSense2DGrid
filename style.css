@@ -1,0 +1,21 @@
+.qv-object-2DimView div.qv-object-content-container {
+	overflow: auto;
+}
+.qv-object-2DimView td,
+.qv-object-2DimView th {
+	border-top: 0px solid #fff;
+	border-bottom: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	vertical-align: middle;
+	cursor: default;
+	font-size: 12px;
+}
+.qv-object-2DimView td.numeric {
+	text-align: right;
+}
+.qv-object-2DimView button {
+	width: 100%;
+}

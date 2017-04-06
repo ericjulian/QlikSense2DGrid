@@ -1,0 +1,39 @@
+<div qv-extension style="height: 100%; position: relative; overflow: auto;">
+	<table>
+		<tr>
+			<td>
+				<lui-select ng-model="fieldList1.model">
+					<option ng-repeat="row in fieldList1.qFieldList.qItems" value="{{row.qName}}">{{row.qName}}</option>
+				</lui-select>
+			</td>
+			<td>
+				<lui-select ng-model="fieldList2.model">
+					<option ng-repeat="row in fieldList2.qFieldList.qItems" value="{{row.qName}}">{{row.qName}}</option>
+				</lui-select>
+			</td>
+			<td>
+				<lui-select ng-model="measureList.model">
+					<option ng-repeat="row in measureList.qMeasureList.qItems" value="{{row.qData.measure.qDef}}" alt="{{row.qMeta.description}}">{{row.qData.measure.qLabel}}</option>
+				</lui-select>
+			</td>
+			<td>
+				<lui-button ng-click="stratify(fieldList1.model, fieldList2.model, measureList.model);">Stratify</lui-button>
+			</td>
+		</tr>
+	</table>
+	<table border="1">
+		<thead>
+			<tr>
+			<th ng-repeat="dim in controlCubeDef.qHyperCube.qDimensionInfo">{{dim.qFallbackTitle}}</td>
+			<th ng-repeat="mea in controlCubeDef.qHyperCube.qMeasureInfo">{{mea.qFallbackTitle}}</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="row in controlCubeDef.qHyperCube.qDataPages[0].qMatrix">
+			<td ng-repeat="col in row">
+				{{col.qText}}
+			</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
