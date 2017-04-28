@@ -1,5 +1,5 @@
 <div qv-extension style="height: 100%; position: relative; overflow: auto;">
-	<table>
+	<table ng-form name="inputForm" id="selectionTable">
 		<tr>
 			<td>
 				<lui-select ng-model="fieldList1.model">
@@ -17,23 +17,52 @@
 				</lui-select>
 			</td>
 			<td>
-				<lui-button ng-click="stratify(fieldList1.model, fieldList2.model, measureList.model);">Stratify</lui-button>
+				<lui-button ng-click="stratify(fieldList1.model, fieldList2.model, measureList.model);">View</lui-button>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<table>
+					<tr>
+						<td>Heat Map Color ( RGB )</td>
+						<td>Activate Heat Map</td>
+						<td>Min value <span class="error" ng-show="inputForm.minValue.$invalid">( Value can only be between {{minRange.minVal}} and {{maxRange.setVal}} )</span>
+						</td>
+						<td>Max value <span class="error" ng-show="inputForm.minValue.$invalid">( Value can only be between {{minRange.setVal}} and {{maxRange.maxVal}} )</span>
+						</td>
+					</tr>
+					<tr>
+						<td><br/><lui-select ng-model="heatMapColors.selectedOption" ng-blur="heatMapColors.selectedOption">
+								<option ng-repeat="row in heatMapColors.colorList" value="{{row.colorCode}}" ng-style="{'background-color': row.colorCode}">{{row.colorName}}</option>
+							</lui-select>
+						</td>
+						<td><div class="lui-switch">
+								<label class="lui-switch__label">
+									<input class="lui-switch__checkbox" type="checkbox" checked="checked">
+									<span class="lui-switch__span">
+										<div class="lui-switch__inner"></div>
+										<div class="lui-switch__switch"></div>
+									</span>
+								</label>
+							</div>
+						</td>
+						<td><input name="minValue" ng-model="minRange.setVal" class="lui-input" type="number" ng-min="minRange.minVal" ng-max="maxRange.setVal" required /></td>
+						<td><input name="maxValue" ng-model="maxRange.setVal" class="lui-input" type="number" ng-min="minRange.setVal" ng-max="maxRange.maxVal" required /></td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 	</table>
-	<table border="1">
-		<thead>
-			<tr>
-			<th ng-repeat="dim in controlCubeDef.qHyperCube.qDimensionInfo">{{dim.qFallbackTitle}}</td>
-			<th ng-repeat="mea in controlCubeDef.qHyperCube.qMeasureInfo">{{mea.qFallbackTitle}}</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="row in controlCubeDef.qHyperCube.qDataPages[0].qMatrix">
-			<td ng-repeat="col in row">
-				{{col.qText}}
+	<table border="1" id="pivotDataTable" ng-show="controlCubeDef !== undefined">
+		<tr>
+			<td><button ng-click="filterData();" ng-show="false">Filter Fields</button></td>
+			<td ng-repeat="topRow in controlCubeDef.qHyperCube.qPivotDataPages[0].qTop"><button ng-click="selectFieldValue(fieldList2.model, topRow.qText);">{{topRow.qText}}</button></td>
+		</tr>
+		<tr ng-repeat="leftRow in controlCubeDef.qHyperCube.qPivotDataPages[0].qLeft">
+			<td><button ng-click="selectFieldValue(fieldList1.model, leftRow.qText);">{{leftRow.qText}}</button></td>
+			<td ng-repeat="dataRow in controlCubeDef.qHyperCube.qPivotDataPages[0].qData[$index]" ng-style="setStyle(dataRow.qText);">
+				{{dataRow.qText}}
 			</td>
-			</tr>
-		</tbody>
+		</tr>
 	</table>
 </div>
